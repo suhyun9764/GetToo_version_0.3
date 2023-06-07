@@ -1,13 +1,11 @@
 package Group2.capstone_project.repository;
 
 import Group2.capstone_project.domain.Client;
+import Group2.capstone_project.domain.Club;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,6 +113,22 @@ public class MysqlClientRepository implements ClientRepository{
         jdbcTemplate.update(sql,client.getName(),client.getStudentNumber(),client.getAge(),client.getId());
     }
 
+    @Override
+    public List<Club> getClubByClient(String id) {
+        String sql = "SELECT c.* FROM membership m JOIN club c ON m.clubName = c.clubName WHERE m.studentName = ? AND m.joinAuth =?";
+        String[] ob = {id,"OK"};
+        List<Club> clubs = jdbcTemplate.query(sql,clubRowMapper(),ob);
+        return clubs;
+    }
+
+    private RowMapper<Club> clubRowMapper(){
+        return (rs, rowNum) -> {
+            Club club = new Club();
+            club.setClubName(rs.getString("clubName"));
+            club.setLeader(rs.getString("leaderName"));
+            return club;
+        };
+    }
     @Override
     public void updatePwd(String id, String newEncodePwd) {
         String sql = "UPDATE client SET pwd= ? WHERE id =?  ";

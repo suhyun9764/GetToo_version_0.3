@@ -1,6 +1,7 @@
 package Group2.capstone_project.repository;
 
 import Group2.capstone_project.domain.Client;
+import Group2.capstone_project.domain.Club;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,8 @@ public interface ClientRepository {
     void clientDelete(String id, String studentNumber);
 
     void updateInfo(Client client);
+
+    List<Club> getClubByClient(String id);
 
 
 }

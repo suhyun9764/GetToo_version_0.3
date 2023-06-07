@@ -1,6 +1,7 @@
 package Group2.capstone_project.repository;
 
 import Group2.capstone_project.domain.Client;
+import Group2.capstone_project.domain.Club;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,11 @@ public class MemoryClientRepository implements ClientRepository{
     @Override
     public void updateInfo(Client client) {
 
+    }
+
+    @Override
+    public List<Club> getClubByClient(String id) {
+        return null;
     }
 
 

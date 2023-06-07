@@ -1,6 +1,7 @@
 package Group2.capstone_project.service;
 
 import Group2.capstone_project.domain.Client;
+import Group2.capstone_project.domain.Club;
 import Group2.capstone_project.repository.ClientRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -105,5 +106,10 @@ public class clientService {
     public boolean checkIdAvailability(String id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         return !optionalClient.isPresent();
+    }
+
+    public List<Club> getClubByClient(String id){
+        List<Club> clubs = clientRepository.getClubByClient(id);
+        return clubs;
     }
 }

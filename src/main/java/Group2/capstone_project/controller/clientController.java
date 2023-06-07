@@ -1,6 +1,7 @@
 package Group2.capstone_project.controller;
 
 import Group2.capstone_project.domain.Client;
+import Group2.capstone_project.domain.Club;
 import Group2.capstone_project.dto.client.ClientDto;
 import Group2.capstone_project.service.clientService;
 import Group2.capstone_project.session.SessionConst;
@@ -11,7 +12,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -479,4 +477,21 @@ public class clientController {
         model.addAttribute("errorMessage", "비밀번호가 틀렸습니다");
         return "loginClient/loginpwdcheck.html";
     }
+
+    @GetMapping("/loginClient/loginGroup")
+    public String loginGroup(Model model,HttpServletRequest request)
+    {
+        HttpSession session = request.getSession(false);
+        Client client = (Client)session.getAttribute(SessionConst.LOGIN_CLIENT);
+        List<Club> clubs = clientserivce.getClubByClient(client.getId());
+        Optional<Club> result = clubs.stream().findAny();
+        if(result.isPresent()){
+            System.out.println("in");
+            model.addAttribute("club",result.get().getClubName());
+        }
+        model.addAttribute("errorMessage", "비밀번호가 틀렸습니다");
+        return "loginClient/login_group.html";
+    }
+
+
 }
