@@ -351,6 +351,15 @@ public class clientController {
         return "login.html";
     }
 
+    @GetMapping("/loginClient/DeleteInfoPage")
+    public String DeleteInfo(HttpServletRequest request,Model model){
+        HttpSession session = request.getSession(false);
+        System.out.println("SUCCESS");
+        Client client = (Client) session.getAttribute(SessionConst.LOGIN_CLIENT);
+        model.addAttribute("client", client);
+        return "loginClient/deleteinfo.html";
+    }
+
     @GetMapping("/redirectLogin")
     public String redirectLogin(HttpServletRequest request, Model model) {
         String redirectURL = request.getParameter("redirectURL");
@@ -396,7 +405,13 @@ public class clientController {
     }
 
     @PostMapping("/clientlogin/loginChangePassword")
-    public String loginChangePassword(HttpServletRequest request,@RequestParam("newPassword") String password){
+    public String loginChangePassword(Model model,HttpServletRequest request,@RequestParam("newPassword") String password, @RequestParam("confirmPassword") String confirmPassword){
+        if(!confirmPassword.equals(password)){
+            model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+            return "loginClient/loginpwdchange.html";
+
+        }
+
         HttpSession session = request.getSession(false);
         Client client = (Client)session.getAttribute(SessionConst.LOGIN_CLIENT);
         String newEncodePwd = passwordEncoder.encode(password);
